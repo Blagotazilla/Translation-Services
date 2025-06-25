@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ON24 Captioning & Interpretation Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .badge-live {
+            background-color: #3B82F6;
+        }
+        .badge-ondemand {
+            background-color: #10B981;
+        }
+        .badge-both {
+            background: linear-gradient(90deg, #3B82F6 50%, #10B981 50%);
+        }
+        .filter-btn.active {
+            background-color: #1D4ED8;
+            color: white;
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+        .language-chip {
+            background-color: #EFF6FF;
+            color: #1D4ED8;
+        }
+        .tab-active {
+            border-bottom: 3px solid #3B82F6;
+            color: #3B82F6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl font-bold text-blue-800 mb-2">ON24 Captioning & Interpretation Services</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Comprehensive solutions for live and on-demand accessibility needs</p>
+        </header>
+
+        <!-- Filter Controls -->
+        <div class="mb-8 bg-white rounded-xl shadow-md p-6">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+                <div class="flex flex-wrap gap-2 justify-center w-full">
+                    <button class="filter-btn px-4 py-2 rounded-lg border border-gray-300 hover:bg-blue-50 active" data-filter="all">All Services</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg border border-gray-300 hover:bg-blue-50" data-filter="live">Live</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg border border-gray-300 hover:bg-blue-50" data-filter="ondemand">On-Demand</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg border border-gray-300 hover:bg-blue-50" data-filter="both">Both</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="mb-6 border-b border-gray-200">
+            <ul class="flex flex-wrap -mb-px" id="serviceTabs">
+                <li class="mr-2">
+                    <button class="tab-btn inline-block p-4 border-b-2 rounded-t-lg active tab-active" data-tab="all">All Services</button>
+                </li>
+                <li class="mr-2">
+                    <button class="tab-btn inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-tab="captioning">Captioning</button>
+                </li>
+                <li class="mr-2">
+                    <button class="tab-btn inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-tab="interpretation">Interpretation</button>
+                </li>
+                <li class="mr-2">
+                    <button class="tab-btn inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-tab="third-party">Third-Party</button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Total Services</p>
+                        <h3 class="text-2xl font-bold">8</h3>
+                    </div>
+                    <i class="fas fa-list-check text-blue-500 text-3xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Live Services</p>
+                        <h3 class="text-2xl font-bold">3</h3>
+                    </div>
+                    <i class="fas fa-broadcast-tower text-green-500 text-3xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500">Languages Supported</p>
+                        <h3 class="text-2xl font-bold">100+</h3>
+                    </div>
+                    <i class="fas fa-language text-purple-500 text-3xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="servicesContainer">
+            <!-- Services will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Service data
+        const services = [
+            {
+                id: 1,
+                type: "both",
+                category: "captioning",
+                title: "Captioning Services (Overview)",
+                description: "Overview of all ON24 captioning features",
+                poweredBy: "Both (Live captions use Google; On-Demand source language captions use Microsoft; On-Demand translated captions use Google)",
+                url: "https://support.on24.com/hc/en-us/articles/21420783891483-Captioning-Services",
+                nuggets: "ON24 offers live, on-demand, and translated captioning via both human and automated services. Options include one-time requests for specific webinars or account-level automation. Supports over 100 languages and formats like CEA-708 for Broadcast Video. Pricing varies—contact your Account Manager or prod.localization@on24.com.",
+                languages: ["All supported languages"],
+                icon: "fa-closed-captioning"
+            },
+            {
+                id: 2,
+                type: "live",
+                category: "captioning",
+                title: "Automated Live Captioning",
+                description: "AI-based live speech-to-text captions",
+                poweredBy: "AI (Live captions use Google)",
+                url: "https://support.on24.com/hc/en-us/articles/21420751717659-Automated-Live-Captioning",
+                nuggets: "ON24's Automated Live Captioning is an AI-powered, paid feature (using Google) that provides real-time speech-to-text captions for Live Video, Broadcast Video, Forums, Breakouts, and Sim-2-Live (video-based) events, supporting 9 languages and requiring activation 30 minutes before presenters join.",
+                languages: ["English", "Spanish", "French", "German", "Portuguese", "Italian", "Dutch", "Russian", "Japanese"],
+                icon: "fa-robot"
+            },
+            {
+                id: 3,
+                type: "live",
+                category: "interpretation",
+                title: "Live Audio Interpretation",
+                description: "Human-powered live multilingual audio interpretation",
+                poweredBy: "Human",
+                url: "https://support.on24.com/hc/en-us/articles/21420792228763-Live-Audio-Interpretation",
+                nuggets: "ON24's Live Audio Interpretation is a human-powered, fully managed service available for Live and Simu-live events, enabling real-time audio translation in up to 6 languages (including ASL/BSL) using ON24's integrated console and vetted interpreter partners. Requires 3–4 weeks lead time and supports up to 200 viewers.",
+                languages: ["ASL", "BSL", "Spanish", "French", "German", "Mandarin", "Japanese"],
+                icon: "fa-headphones"
+            },
+            {
+                id: 4,
+                type: "live",
+                category: "third-party",
+                title: "Third-Party Live Audio Vendors",
+                description: "Partner-managed live translation services",
+                poweredBy: "Human",
+                url: "https://support.on24.com/hc/en-us/articles/21420785040667-Third-Party-Vendors-Allow-Lists-and-Configuration-Info",
+                nuggets: "ON24's Third-Party Vendor Integration allows external services (e.g., Interprefy, KUDO, The Speech, NCI) to integrate live captions or audio via the URL Engagement Tool during ON24 events. This human-powered solution supports Live and Simu-live events, requires network allow listing (specific IPs and domains), and includes best practice setup guides for embedding the services directly into the Event Console.",
+                languages: ["Varies by vendor"],
+                icon: "fa-handshake"
+            },
+            {
+                id: 5,
+                type: "ondemand",
+                category: "captioning",
+                title: "Automated On-Demand Captioning",
+                description: "AI-generated captions for recorded events",
+                poweredBy: "AI (On-Demand source language captions use Microsoft; translated captions use Google)",
+                url: "https://support.on24.com/hc/en-us/articles/21420750501147-Automated-On-Demand-Captioning",
+                nuggets: "ON24's Automated On-Demand Captioning is an AI-powered, paid feature (source language via Microsoft, translated via Google) that generates captions and transcripts for all On-Demand and Simu-live events, supports multiple languages, includes an in-app editor, and offers optional translated subtitles—captions appear ~2–3 hours post-event and must be activated to be visible.",
+                languages: ["Multiple languages"],
+                icon: "fa-file-alt"
+            },
+            {
+                id: 6,
+                type: "ondemand",
+                category: "captioning",
+                title: "Auto-Generate Captions for Past Webinars",
+                description: "AI re-trigger captions on previous events",
+                poweredBy: "AI (Same as above for On-Demand)",
+                url: "https://support.on24.com/hc/en-us/articles/21420790705179-Auto-Generate-Closed-Captions-for-Previous-Webinars",
+                nuggets: "ON24's Auto-Generate Captions for Previous Webinars is an AI-powered feature that allows you to re-trigger closed captions on past On-Demand or Simu-live events by re-uploading the original Presenter Media file—automatically generating captions (or translations) if none exist, or replacing existing ones (including any edits). Captions must be activated to display.",
+                languages: ["Multiple languages"],
+                icon: "fa-history"
+            },
+            {
+                id: 7,
+                type: "ondemand",
+                category: "captioning",
+                title: "On-Demand Subtitling & Transcription",
+                description: "Human-transcribed captions and transcripts",
+                poweredBy: "Human",
+                url: "https://support.on24.com/hc/en-us/articles/21420793531035-On-Demand-Subtitling-and-Transcription",
+                nuggets: "ON24's On-Demand Subtitling and Transcription is a human-powered service that adds .VTT captions and transcripts to previously run On-Demand and Simu-live events, with support for 100+ languages, including regional dialects and ASL/BSL. Request per event; turnaround varies by language and scope.",
+                languages: ["100+ languages including regional dialects"],
+                icon: "fa-closed-captioning"
+            },
+            {
+                id: 8,
+                type: "ondemand",
+                category: "captioning",
+                title: "Uploading Caption Files (.VTT)",
+                description: "Upload your own caption files",
+                poweredBy: "Human",
+                url: "https://support.on24.com/hc/en-us/articles/25216666898331-Uploading-Caption-Files-To-Your-Webinar",
+                nuggets: "Upload .VTT captions manually to on-demand or Simu-live webinars via the Media Player settings. Supports UTF-8 WebVTT format with custom language labeling and default display settings.",
+                languages: ["Any language supported by VTT"],
+                icon: "fa-upload"
+            }
+        ];
+
+        // DOM elements
+        const servicesContainer = document.getElementById('servicesContainer');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        // Current filter state
+        let currentFilter = 'all';
+        let currentTab = 'all';
+
+        // Render services based on current filter and search
+        function renderServices() {
+            servicesContainer.innerHTML = '';
+            
+            const filteredServices = services.filter(service => {
+                const matchesFilter = currentFilter === 'all' || service.type === currentFilter;
+                const matchesTab = currentTab === 'all' || service.category === currentTab;
+                return matchesFilter && matchesTab;
+            });
+
+            if (filteredServices.length === 0) {
+                servicesContainer.innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <i class="fas fa-search fa-3x text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-700">No services found</h3>
+                        <p class="text-gray-500">Try adjusting your filters or search term</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredServices.forEach(service => {
+                const badgeClass = service.type === 'live' ? 'badge-live' : 
+                                 service.type === 'ondemand' ? 'badge-ondemand' : 'badge-both';
+                const badgeText = service.type === 'live' ? 'Live' : 
+                                 service.type === 'ondemand' ? 'On-Demand' : 'Both';
+
+                const serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg';
+                serviceCard.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="${badgeClass} text-white text-xs font-semibold px-2.5 py-0.5 rounded-full mb-2">${badgeText}</span>
+                                <h3 class="text-xl font-bold text-gray-800 mb-1">${service.title}</h3>
+                                <p class="text-gray-600">${service.description}</p>
+                            </div>
+                            <i class="fas ${service.icon} text-blue-500 text-2xl"></i>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-1">Powered By:</p>
+                            <p class="text-sm text-gray-600">${service.poweredBy}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-1">Supported Languages:</p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                ${service.languages.map(lang => 
+                                    `<span class="language-chip text-xs px-2 py-1 rounded-full">${lang}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-gray-700 mb-1">Key Features:</p>
+                            <p class="text-sm text-gray-600">${service.nuggets}</p>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mt-6">
+                            <a href="${service.url}" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Knowledge Center
+                            </a>
+                            <button class="details-btn text-blue-600 hover:text-blue-800 text-sm font-medium" data-id="${service.id}">
+                                View Details <i class="fas fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                servicesContainer.appendChild(serviceCard);
+            });
+
+            // Add event listeners to detail buttons
+            document.querySelectorAll('.details-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const serviceId = parseInt(btn.getAttribute('data-id'));
+                    showServiceDetails(serviceId);
+                });
+            });
+        }
+
+        // Show service details modal
+        function showServiceDetails(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+
+            const badgeClass = service.type === 'live' ? 'badge-live' : 
+                             service.type === 'ondemand' ? 'badge-ondemand' : 'badge-both';
+            const badgeText = service.type === 'live' ? 'Live' : 
+                             service.type === 'ondemand' ? 'On-Demand' : 'Both';
+
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="${badgeClass} text-white text-xs font-semibold px-2.5 py-0.5 rounded-full mb-2">${badgeText}</span>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-1">${service.title}</h3>
+                                <p class="text-gray-600">${service.description}</p>
+                            </div>
+                            <button class="close-modal text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-2xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <h4 class="text-lg font-medium text-gray-800 mb-3">Service Details</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Powered By:</p>
+                                        <p class="text-sm text-gray-600 mt-1">${service.poweredBy}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Supported Languages:</p>
+                                        <div class="flex flex-wrap gap-2 mt-1">
+                                            ${service.languages.map(lang => 
+                                                `<span class="language-chip text-xs px-2 py-1 rounded-full">${lang}</span>`
+                                            ).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-medium text-gray-800 mb-3">Implementation</h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Knowledge Center:</p>
+                                        <a href="${service.url}" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm inline-flex items-center mt-1">
+                                            <i class="fas fa-external-link-alt mr-1"></i> View Documentation
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-700">Contact:</p>
+                                        <p class="text-sm text-gray-600 mt-1">prod.localization@on24.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-medium text-gray-800 mb-3">Full Description</h4>
+                            <p class="text-sm text-gray-600">${service.nuggets}</p>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button class="close-modal px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add event listeners to close buttons
+            modal.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                });
+            });
+        }
+
+        // Event listeners for filter buttons
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentFilter = button.getAttribute('data-filter');
+                renderServices();
+            });
+        });
+
+        // Event listeners for tab buttons
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('tab-active');
+                    btn.classList.remove('text-blue-600');
+                });
+                button.classList.add('tab-active');
+                button.classList.add('text-blue-600');
+                currentTab = button.getAttribute('data-tab');
+                renderServices();
+            });
+        });
+
+        // Initial render
+        renderServices();
+    </script>
+</body>
+</html>
